@@ -7,7 +7,7 @@ const userList = require('../../data/user.json').users
 const Record = require('../record.js')
 const User = require('../user.js')
 
-mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/record', { useNewUrlParser: true })
 
 const db = mongoose.connection
 
@@ -48,3 +48,8 @@ db.once('open', () => {
 
   console.log('done.')
 })
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Express is listening on http://localhost:3000`)
+})
+

@@ -11,7 +11,7 @@ const flash = require('connect-flash')
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
-}  
+}
 
 const hbs = exphbs.create({ helpers: {} })
 
@@ -21,7 +21,7 @@ app.use(express.static('public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
-mongoose.connect('mongodb://localhost/record', { useNewUrlParser: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/record', { useNewUrlParser: true, useCreateIndex: true })
 const db = mongoose.connection
 
 db.on( 'error', () => {
@@ -40,23 +40,23 @@ app.use(session({
   app.use(passport.initialize())
   app.use(passport.session())
   app.use(flash())
-  
+
   require('./config/passport')(passport)
-  
+
   app.use((req, res, next) => {
     res.locals.user = req.user
     res.locals.isAuthenticated = req.isAuthenticated()
     res.locals.success_msg = req.flash('success_msg')
     res.locals.warning_msg = req.flash('warning_msg')
     res.locals.error_msg = req.flash('error_msg')
-  
+
     next()
   })
-  
-const Record = require('./models/record.js')  
+
+const Record = require('./models/record.js')
 
 app.use('/', require('./routes/index'))
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Express is listening on http://localhost:3000`)
 })
