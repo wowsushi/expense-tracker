@@ -8,6 +8,7 @@ const methodOverride = require('method-override')
 const session = require('express-session')
 const passport = require('passport')
 const flash = require('connect-flash')
+const bcrypt = require('bcryptjs')
 
 const recordList = require('./data/record.json').records
 const userList = require('./data/user.json').users
@@ -89,8 +90,6 @@ app.use(session({
 
     next()
   })
-
-const Record = require('./models/record.js')
 
 app.use('/', require('./routes/index'))
 
